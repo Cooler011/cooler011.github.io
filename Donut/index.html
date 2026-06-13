@@ -33,14 +33,33 @@ pre {
 
     white-space: pre;
 
-
     transform: scale(1.12, 1.18);
 
     transform-origin: center;
 }
+
+#back {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+
+    color: white;
+    text-decoration: none;
+
+    font-family: monospace;
+    font-size: 20px;
+
+    z-index: 9999;
+}
+
+#back:hover {
+    text-decoration: underline;
+}
 </style>
 </head>
 <body>
+
+<a href="/" id="back">Back</a>
 
 <pre id="donut"></pre>
 
