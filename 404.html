@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>404 - Cooler01s Website!</title>
+<link rel="icon" type="image/gif" href="/SNOW.png">
+<style>
+
+@font-face {
+  font-family: "LucidaGrande";
+  src: url("/font1.ttf") format("truetype");
+}
+
+:root {
+  --primary: hsl(213, 79%, 56%);
+  --light: hsl(181, 95%, 92%);
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  margin: 0;
+  background-image: url("/BGsnow.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
+  color: white;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.content {
+  padding-top: 70px;
+  text-align: center;
+  animation: fadeIn 1s ease;
+}
+
+.error-code {
+  font-size: 90px;
+  margin: 0 0 10px 0;
+
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.4),
+    0 2px 12px rgba(0,0,0,0.8);
+}
+
+.site-title {
+  font-size: 42px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.4),
+    0 2px 8px rgba(0,0,0,0.7);
+}
+
+.welcome-text {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 40px;
+
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.3),
+    0 2px 6px rgba(0,0,0,0.7);
+}
+
+.back-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.aqua-button {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  color: black;
+  text-decoration: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image:
+    linear-gradient(hsl(0 0% 100% / 0.85), transparent 10px),
+    linear-gradient(hsl(0 0% 100% / 0.25) 10px, transparent 10px),
+    radial-gradient(circle at 10px 5px, hsl(0 0% 100% / 0.25) 5px, transparent 5px),
+    radial-gradient(circle at 0px 5px, hsl(0 0% 100% / 0.25) 5px, transparent 5px),
+    linear-gradient(var(--primary), var(--light));
+
+  padding: 0.6em 3em;
+
+  background-size:
+    100%,
+    calc(100% - 20px),
+    10px 10px,
+    10px 10px,
+    100%;
+
+  background-position:
+    top,
+    top center,
+    top left,
+    top right,
+    center;
+
+  background-repeat: no-repeat;
+
+  border-radius: 100vw;
+  position: relative;
+  cursor: pointer;
+}
+
+.aqua-button:active {
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.55);
+}
+
+.aqua-button::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -1px;
+  margin-inline: auto;
+
+  background: linear-gradient(
+    hsl(240, 74%, 30%),
+    hsl(0, 0%, 38%)
+  );
+
+  border-radius: 100vw;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="content">
+
+<h1 class="error-code">404</h1>
+
+<h2 class="site-title">Page Not Found</h2>
+
+<p class="welcome-text">Looks like this page does not exist.</p>
+
+<div class="back-button-container">
+  <a class="aqua-button" href="/">Back Home</a>
+</div>
+
+</div>
+
+</body>
+</html>
