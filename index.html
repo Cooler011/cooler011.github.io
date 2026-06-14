@@ -6,7 +6,7 @@
 
 <title>Cooler01s Website!</title>
 
-<link rel="icon" type="image/gif" href="SNOW.png">
+<link rel="icon" type="image/png" href="SNOW.png">
 <link rel="apple-touch-icon" href="SNOW.png">
 <link rel="manifest" href="/manifest.json">
 
@@ -27,23 +27,6 @@
   --light: hsl(181, 95%, 92%);
 }
 
-html {
-  min-height: 100%;
-  background: #000 url("BGsnow.png") center center / cover no-repeat;
-}
-
-body {
-  min-height: 100vh;
-  margin: 2rem;
-  background: transparent;
-  font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
-  color: white;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  animation: fadeIn 1s ease;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -56,6 +39,31 @@ body {
   }
 }
 
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 2rem;
+  min-height: calc(100vh - 4rem);
+
+  background-image: url("BGsnow.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
+  color: white;
+
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  animation: fadeIn 1s ease;
+}
+
 .site-title {
   text-align: center;
   font-size: 42px;
@@ -65,8 +73,6 @@ body {
   text-shadow:
     0 1px 0 rgba(255,255,255,0.4),
     0 2px 8px rgba(0,0,0,0.7);
-
-  animation: fadeIn 1s ease;
 }
 
 .welcome-text {
@@ -78,8 +84,6 @@ body {
   text-shadow:
     0 1px 0 rgba(255,255,255,0.3),
     0 2px 6px rgba(0,0,0,0.7);
-
-  animation: fadeIn 1.3s ease;
 }
 
 .button-container {
@@ -87,7 +91,6 @@ body {
   justify-content: center;
   gap: 20px;
   margin-top: 20px;
-  animation: fadeIn 1.6s ease;
 }
 
 .aqua-link {
@@ -155,8 +158,19 @@ button::before {
   border-radius: 100vw;
 }
 
+/* MOBILE */
+
 @media (max-width: 700px) {
-  html {
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  body {
+    margin: 1rem;
+
+    /* Fixes iOS Safari background issues */
     background-attachment: scroll;
   }
 
