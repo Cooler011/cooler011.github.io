@@ -2,11 +2,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cooler01s Website!</title>
 <link rel="icon" type="image/gif" href="SNOW.png">
 
 <style>
-
 @font-face {
   font-family: "LucidaGrande";
   src: url("font1.ttf") format("truetype");
@@ -45,12 +45,9 @@ body {
   font-size: 42px;
   margin-top: 10px;
   margin-bottom: 10px;
-
   text-shadow:
     0 1px 0 rgba(255,255,255,0.4),
     0 2px 8px rgba(0,0,0,0.7);
-
-  animation: fadeIn 1s ease;
 }
 
 .welcome-text {
@@ -58,12 +55,9 @@ body {
   font-size: 20px;
   margin-top: 0;
   margin-bottom: 40px;
-
   text-shadow:
     0 1px 0 rgba(255,255,255,0.3),
     0 2px 6px rgba(0,0,0,0.7);
-
-  animation: fadeIn 1.3s ease;
 }
 
 .button-container {
@@ -83,36 +77,29 @@ button {
   font-size: 13px;
   font-weight: 400;
   color: black;
-
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-
   background-image:
     linear-gradient(hsl(0 0% 100% / 0.85), transparent 10px),
     linear-gradient(hsl(0 0% 100% / 0.25) 10px, transparent 10px),
     radial-gradient(circle at 10px 5px, hsl(0 0% 100% / 0.25) 5px, transparent 5px),
     radial-gradient(circle at 0px 5px, hsl(0 0% 100% / 0.25) 5px, transparent 5px),
     linear-gradient(var(--primary), var(--light));
-
   padding: 0.6em 3em;
-
   background-size:
     100%,
     calc(100% - 20px),
     10px 10px,
     10px 10px,
     100%;
-
   background-position:
     top,
     top center,
     top left,
     top right,
     center;
-
   background-repeat: no-repeat;
-
   border: 0;
   border-radius: 100vw;
   position: relative;
@@ -120,8 +107,7 @@ button {
 }
 
 button:active {
-  box-shadow:
-    inset 0 0 30px rgba(0,0,0,0.55);
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.55);
 }
 
 button::before {
@@ -130,15 +116,45 @@ button::before {
   z-index: -1;
   inset: -1px;
   margin-inline: auto;
-
   background: linear-gradient(
     hsl(240, 74%, 30%),
     hsl(0, 0%, 38%)
   );
-
   border-radius: 100vw;
 }
 
+@media (max-width: 600px) {
+  body {
+    margin: 1rem;
+    background-attachment: scroll;
+  }
+
+  .site-title {
+    font-size: 34px;
+  }
+
+  .welcome-text {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .aqua-link {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  button {
+    width: 100%;
+    font-size: 18px;
+    padding: 0.8em 2em;
+  }
+}
 </style>
 </head>
 
@@ -149,7 +165,6 @@ button::before {
 <p class="welcome-text">Welcome to my Website!</p>
 
 <div class="button-container">
-
   <a class="aqua-link" href="/Socials/">
     <button>Socials</button>
   </a>
@@ -161,10 +176,7 @@ button::before {
   <a class="aqua-link" href="/Goodies/">
     <button>Goodies</button>
   </a>
-
 </div>
 
-</body>
-</html>
 </body>
 </html>
