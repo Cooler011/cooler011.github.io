@@ -2,12 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Cooler01s Website</title>
 
+<link rel="icon" type="image/png" href="/SNOW.png">
+<link rel="apple-touch-icon" href="/SNOW.png">
+<link rel="manifest" href="/manifest.json">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cooler01">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#000000">
+
 <style>
+html,
 body {
     margin: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow: hidden;
     background: black;
+}
+
+body {
     color: white;
 
     display: flex;
@@ -16,8 +34,7 @@ body {
 
     width: 100vw;
     height: 100vh;
-
-    overflow: hidden;
+    height: 100dvh;
 
     font-family: monospace;
 }
@@ -54,6 +71,32 @@ pre {
 
 #back:hover {
     text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+    pre {
+        font-size: 7px;
+        transform: scale(1);
+    }
+
+    #back {
+        top: 15px;
+        left: 15px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 380px) {
+    pre {
+        font-size: 6px;
+    }
+}
+
+@media (max-height: 500px) {
+    pre {
+        font-size: 6px;
+        transform: scale(1);
+    }
 }
 </style>
 </head>
