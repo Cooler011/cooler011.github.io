@@ -19,7 +19,12 @@
 
 @font-face {
   font-family: "LucidaGrande";
-  src: url("../font1.ttf") format("truetype");
+  src: url("/font1.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "PixelFont";
+  src: url("/3DDonut.ttf") format("truetype");
 }
 
 :root {
@@ -35,7 +40,7 @@ body {
   margin: 0;
   min-height: 100vh;
 
-  background-image: url("../BGsnow.png");
+  background-image: url("/BGsnow.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -44,7 +49,13 @@ body {
   font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
   color: white;
 
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding-top: 40px;
   overflow-x: hidden;
+  box-sizing: border-box;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -63,15 +74,16 @@ body {
 }
 
 .content {
-  padding-top: 40px;
   animation: fadeIn 1s ease;
+  text-align: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .site-title {
-  text-align: center;
   font-size: 42px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 15px;
 
   text-shadow:
     0 1px 0 rgba(255,255,255,0.4),
@@ -79,54 +91,44 @@ body {
 }
 
 .welcome-text {
-  text-align: center;
   font-size: 20px;
   margin-top: 0;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 
   text-shadow:
     0 1px 0 rgba(255,255,255,0.3),
     0 2px 6px rgba(0,0,0,0.7);
 }
 
-.project-link {
-  display: block;
-  width: fit-content;
-  margin: auto;
+.donut-link {
+  text-decoration: none;
 }
 
-.project-logo {
-  display: block;
-
-  width: 220px;
-  height: auto;
-
-  margin: auto;
-
-  filter:
-    drop-shadow(0 0 20px rgba(0,0,0,0.6));
+.pixel-text {
+  font-family: "PixelFont", monospace;
+  font-size: 48px;
+  color: white;
 
   transition:
     transform 0.2s ease,
     filter 0.2s ease;
 
+  text-shadow:
+    0 0 12px rgba(0,0,0,0.8);
+
   cursor: pointer;
 }
 
-.project-logo:hover {
+.pixel-text:hover {
   transform: scale(1.05);
 }
 
-.project-logo:active {
-  filter:
-    brightness(0.8)
-    drop-shadow(0 0 20px rgba(0,0,0,0.6));
+.pixel-text:active {
+  filter: brightness(0.7);
 }
 
 .back-button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
+  margin-top: 70px;
 }
 
 .aqua-button {
@@ -167,7 +169,6 @@ body {
 
   border-radius: 100vw;
   position: relative;
-
   cursor: pointer;
 }
 
@@ -181,7 +182,6 @@ body {
   position: absolute;
   z-index: -1;
   inset: -1px;
-  margin-inline: auto;
 
   background: linear-gradient(
     hsl(240, 74%, 30%),
@@ -190,8 +190,6 @@ body {
 
   border-radius: 100vw;
 }
-
-/* Mobile */
 
 @media (max-width: 700px) {
 
@@ -202,19 +200,28 @@ body {
 
   body {
     background-attachment: scroll;
-  }
-
-  .content {
     padding-top: 30px;
-    padding-left: 1rem;
-    padding-right: 1rem;
   }
 
-  .project-logo {
-    width: 180px;
+  .site-title {
+    font-size: 42px;
+  }
+
+  .welcome-text {
+    font-size: 20px;
+    margin-bottom: 50px;
+  }
+
+  .pixel-text {
+    font-size: 42px;
+  }
+
+  .back-button-container {
+    margin-top: 60px;
   }
 
   .aqua-button {
+    display: inline-block;
     width: 280px;
     max-width: 100%;
     box-sizing: border-box;
@@ -229,12 +236,12 @@ body {
 
 <div class="content">
 
-<h1 class="site-title">My Projects</h1>
+<h1 class="site-title">Goodies</h1>
 
-<p class="welcome-text">Some cool things I made</p>
+<p class="welcome-text">Random cool stuff I made</p>
 
-<a class="project-link" href="https://linkmii.org/" target="_blank">
-  <img class="project-logo" src="https://linkmii.org/logo.png" alt="LinkMii">
+<a class="donut-link" href="/Donut/">
+  <div class="pixel-text">3D Donut</div>
 </a>
 
 <div class="back-button-container">
