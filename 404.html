@@ -2,8 +2,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Cooler01s Website!</title>
-<link rel="icon" type="image/gif" href="/SNOW.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>404 - Cooler01s Website!</title>
+
+<link rel="icon" type="image/png" href="/SNOW.png">
+<link rel="apple-touch-icon" href="/SNOW.png">
+<link rel="manifest" href="/manifest.json">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cooler01">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#3584e4">
+
 <style>
 
 @font-face {
@@ -16,11 +27,27 @@
   --light: hsl(181, 95%, 92%);
 }
 
-html,
+html {
+  min-height: 100%;
+}
+
 body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  margin: 0;
+  min-height: 100vh;
+
+  background-image: url("/BGsnow.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
+  color: white;
+
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @keyframes fadeIn {
@@ -35,23 +62,10 @@ body {
   }
 }
 
-body {
-  margin: 0;
-  background-image: url("/BGsnow.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
-  font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
-  color: white;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 .content {
   padding-top: 70px;
+  padding-left: 1rem;
+  padding-right: 1rem;
   text-align: center;
   animation: fadeIn 1s ease;
 }
@@ -150,6 +164,44 @@ body {
   );
 
   border-radius: 100vw;
+}
+
+@media (max-width: 700px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  body {
+    background-attachment: scroll;
+  }
+
+  .content {
+    padding-top: 55px;
+  }
+
+  .error-code {
+    font-size: 80px;
+  }
+
+  .site-title {
+    font-size: 36px;
+  }
+
+  .welcome-text {
+    font-size: 20px;
+  }
+
+  .back-button-container {
+    margin-top: 40px;
+  }
+
+  .aqua-button {
+    width: 280px;
+    max-width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
 }
 
 </style>
