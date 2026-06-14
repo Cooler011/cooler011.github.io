@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Cooler01s Website!</title>
+
 <link rel="icon" type="image/gif" href="SNOW.png">
+<link rel="apple-touch-icon" href="SNOW.png">
+<link rel="manifest" href="/manifest.json">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cooler01">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#3584e4">
 
 <style>
 
@@ -17,6 +25,23 @@
 :root {
   --primary: hsl(213, 79%, 56%);
   --light: hsl(181, 95%, 92%);
+}
+
+html {
+  min-height: 100%;
+  background: #000 url("BGsnow.png") center center / cover no-repeat;
+}
+
+body {
+  min-height: 100vh;
+  margin: 2rem;
+  background: transparent;
+  font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
+  color: white;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  animation: fadeIn 1s ease;
 }
 
 @keyframes fadeIn {
@@ -31,22 +56,9 @@
   }
 }
 
-body {
-  margin: 2rem;
-  background: url("BGsnow.png") center/cover no-repeat fixed;
-  font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
-  color: white;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  animation: fadeIn 1s ease;
-}
-
 .site-title {
   text-align: center;
   font-size: 42px;
-  line-height: 1.1;
-  padding: 0 20px;
   margin-top: 10px;
   margin-bottom: 10px;
 
@@ -143,23 +155,9 @@ button::before {
   border-radius: 100vw;
 }
 
-/* Mobile */
-
 @media (max-width: 700px) {
-
-  body {
+  html {
     background-attachment: scroll;
-    margin: 1rem;
-  }
-
-  .site-title {
-    font-size: 72px;
-    line-height: 0.95;
-    padding: 0 24px;
-  }
-
-  .welcome-text {
-    font-size: 20px;
   }
 
   .button-container {
@@ -169,8 +167,7 @@ button::before {
   }
 
   .aqua-link {
-    width: 100%;
-    max-width: 320px;
+    width: 280px;
   }
 
   .aqua-link button {
