@@ -6,8 +6,8 @@
 
 <title>Cooler01s Website!</title>
 
-<link rel="icon" type="image/png" href="SNOW.png">
-<link rel="apple-touch-icon" href="SNOW.png">
+<link rel="icon" type="image/png" href="/SNOW.png">
+<link rel="apple-touch-icon" href="/SNOW.png">
 <link rel="manifest" href="/manifest.json">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -19,12 +19,35 @@
 
 @font-face {
   font-family: "LucidaGrande";
-  src: url("font1.ttf") format("truetype");
+  src: url("/font1.ttf") format("truetype");
 }
 
 :root {
   --primary: hsl(213, 79%, 56%);
   --light: hsl(181, 95%, 92%);
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  background-image: url("../BGsnow.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
+  color: white;
+
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @keyframes fadeIn {
@@ -39,28 +62,8 @@
   }
 }
 
-html {
-  min-height: 100%;
-}
-
-body {
-  margin: 2rem;
-  min-height: calc(100vh - 4rem);
-
-  background-image: url("BGsnow.png");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-
-  font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
-  color: white;
-
-  overflow-x: hidden;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
+.content {
+  padding-top: 40px;
   animation: fadeIn 1s ease;
 }
 
@@ -86,22 +89,54 @@ body {
     0 2px 6px rgba(0,0,0,0.7);
 }
 
-.button-container {
+.socials {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
+  align-items: center;
+  gap: 40px;
+  margin-top: 30px;
 }
 
-.aqua-link {
-  text-decoration: none;
+.socials img {
+  width: 90px;
+  height: auto;
+
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+
+  cursor: pointer;
+
+  filter:
+    drop-shadow(0 0 12px rgba(0,0,0,0.5));
 }
 
-button {
+.youtube-logo {
+  width: 120px;
+}
+
+.socials img:hover {
+  transform: scale(1.08);
+}
+
+.socials img:active {
+  filter:
+    brightness(0.7)
+    drop-shadow(0 0 12px rgba(0,0,0,0.5));
+}
+
+.back-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.aqua-button {
   font-family: inherit;
   font-size: 13px;
   font-weight: 400;
   color: black;
+  text-decoration: none;
 
   appearance: none;
   -webkit-appearance: none;
@@ -132,18 +167,18 @@ button {
 
   background-repeat: no-repeat;
 
-  border: 0;
   border-radius: 100vw;
   position: relative;
+
   cursor: pointer;
 }
 
-button:active {
+.aqua-button:active {
   box-shadow:
     inset 0 0 30px rgba(0,0,0,0.55);
 }
 
-button::before {
+.aqua-button::before {
   content: "";
   position: absolute;
   z-index: -1;
@@ -158,7 +193,7 @@ button::before {
   border-radius: 100vw;
 }
 
-/* mobile fixes */
+/* Mobile */
 
 @media (max-width: 700px) {
 
@@ -168,24 +203,27 @@ button::before {
   }
 
   body {
-    margin: 1rem;
-
-    
     background-attachment: scroll;
   }
 
-  .button-container {
+  .socials {
     flex-direction: column;
-    align-items: center;
-    gap: 18px;
+    gap: 30px;
   }
 
-  .aqua-link {
+  .socials img {
+    width: 80px;
+  }
+
+  .youtube-logo {
+    width: 110px;
+  }
+
+  .aqua-button {
     width: 280px;
-  }
-
-  .aqua-link button {
-    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    text-align: center;
   }
 }
 
@@ -194,23 +232,27 @@ button::before {
 
 <body>
 
-<h1 class="site-title">Cooler01s Website!</h1>
+<div class="content">
 
-<p class="welcome-text">Welcome to my Website!</p>
+<h1 class="site-title">My Socials</h1>
 
-<div class="button-container">
+<p class="welcome-text">Here's my Socials</p>
 
-  <a class="aqua-link" href="/Socials/">
-    <button>Socials</button>
+<div class="socials">
+
+  <a href="https://x.com/CooIer01" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28white%29.png" alt="X">
   </a>
 
-  <a class="aqua-link" href="/Projects/">
-    <button>Projects</button>
+  <a href="https://www.youtube.com/@Cooler01.0" target="_blank">
+    <img class="youtube-logo" src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png" alt="YouTube">
   </a>
 
-  <a class="aqua-link" href="/Goodies/">
-    <button>Goodies</button>
-  </a>
+</div>
+
+<div class="back-button-container">
+  <a class="aqua-button" href="/">Back</a>
+</div>
 
 </div>
 
