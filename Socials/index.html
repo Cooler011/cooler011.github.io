@@ -2,8 +2,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Cooler01s Website!</title>
-<link rel="icon" type="image/gif" href="SNOW.png">
+
+<link rel="icon" type="image/png" href="SNOW.png">
+<link rel="apple-touch-icon" href="SNOW.png">
+<link rel="manifest" href="/manifest.json">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cooler01">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#3584e4">
+
 <style>
 
 @font-face {
@@ -14,13 +25,6 @@
 :root {
   --primary: hsl(213, 79%, 56%);
   --light: hsl(181, 95%, 92%);
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
 }
 
 @keyframes fadeIn {
@@ -35,24 +39,27 @@ body {
   }
 }
 
-body {
-  margin: 0;
+html {
+  min-height: 100%;
+}
 
-  background-image: url("../BGsnow.png");
-  background-size: cover;
+body {
+  margin: 2rem;
+  min-height: calc(100vh - 4rem);
+
+  background-image: url("BGsnow.png");
   background-position: center;
+  background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
 
   font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
   color: white;
 
+  overflow-x: hidden;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.content {
-  padding-top: 40px;
 
   animation: fadeIn 1s ease;
 }
@@ -79,58 +86,22 @@ body {
     0 2px 6px rgba(0,0,0,0.7);
 }
 
-.socials {
+.button-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-
-  gap: 40px;
-
-  margin-top: 30px;
+  gap: 20px;
+  margin-top: 20px;
 }
 
-.socials img {
-  width: 90px;
-  height: auto;
-
-  transition:
-    transform 0.2s ease,
-    filter 0.2s ease;
-
-  cursor: pointer;
-
-  filter:
-    drop-shadow(0 0 12px rgba(0,0,0,0.5));
+.aqua-link {
+  text-decoration: none;
 }
 
-.youtube-logo {
-  width: 120px;
-}
-
-.socials img:hover {
-  transform: scale(1.08);
-}
-
-.socials img:active {
-  filter:
-    brightness(0.7)
-    drop-shadow(0 0 12px rgba(0,0,0,0.5));
-}
-
-.back-button-container {
-  display: flex;
-  justify-content: center;
-
-  margin-top: 50px;
-}
-
-.aqua-button {
-
+button {
   font-family: inherit;
   font-size: 13px;
   font-weight: 400;
   color: black;
-  text-decoration: none;
 
   appearance: none;
   -webkit-appearance: none;
@@ -161,18 +132,18 @@ body {
 
   background-repeat: no-repeat;
 
+  border: 0;
   border-radius: 100vw;
   position: relative;
-
   cursor: pointer;
 }
 
-.aqua-button:active {
+button:active {
   box-shadow:
     inset 0 0 30px rgba(0,0,0,0.55);
 }
 
-.aqua-button::before {
+button::before {
   content: "";
   position: absolute;
   z-index: -1;
@@ -187,32 +158,59 @@ body {
   border-radius: 100vw;
 }
 
+/* mobile fixes */
+
+@media (max-width: 700px) {
+
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  body {
+    margin: 1rem;
+
+    
+    background-attachment: scroll;
+  }
+
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .aqua-link {
+    width: 280px;
+  }
+
+  .aqua-link button {
+    width: 100%;
+  }
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="content">
+<h1 class="site-title">Cooler01s Website!</h1>
 
-<h1 class="site-title">My Socials</h1>
+<p class="welcome-text">Welcome to my Website!</p>
 
-<p class="welcome-text">Heres my Socials</p>
+<div class="button-container">
 
-<div class="socials">
-
-  <a href="https://x.com/CooIer01" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28white%29.png">
+  <a class="aqua-link" href="/Socials/">
+    <button>Socials</button>
   </a>
 
-  <a href="https://www.youtube.com/@Cooler01.0" target="_blank">
-    <img class="youtube-logo" src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Youtube_logo.png">
+  <a class="aqua-link" href="/Projects/">
+    <button>Projects</button>
   </a>
 
-</div>
-
-<div class="back-button-container">
-  <a class="aqua-button" href="/">Back</a>
-</div>
+  <a class="aqua-link" href="/Goodies/">
+    <button>Goodies</button>
+  </a>
 
 </div>
 
