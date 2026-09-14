@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RetroSpector Web | Cooler01</title>
+<meta name="description" content="Inspect retro game ROM information directly in your browser.">
+<link rel="icon" type="image/png" href="../SNOW.png">
+<link rel="apple-touch-icon" href="../SNOW.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cooler01">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#3584e4">
+<style>
+@font-face {
+  font-family: "LucidaGrande";
+  src: url("../font1.ttf") format("truetype");
+}
+
+:root {
+  --primary: hsl(213, 79%, 56%);
+  --light: hsl(181, 95%, 92%);
+}
+
+* { box-sizing: border-box; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+html { min-height: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-image: url("../BGsnow.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: "LucidaGrande", Helvetica, Arial, sans-serif;
+  color: white;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  animation: fadeIn .8s ease;
+}
+
+.page {
+  width: min(1000px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 32px 0 60px;
+}
+
+.site-title {
+  margin: 10px 0 8px;
+  text-align: center;
+  font-size: 42px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.4), 0 2px 8px rgba(0,0,0,.7);
+}
+
+.welcome-text {
+  margin: 0 0 34px;
+  text-align: center;
+  font-size: 18px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.3), 0 2px 6px rgba(0,0,0,.7);
+}
+
+/* ripped from the site's blog-card look */
+.black-box {
+  background: rgba(0, 0, 0, .48);
+  border: 1px solid rgba(255,255,255,.38);
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.18);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+.rom-picker {
+  width: 310px;
+  height: 250px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 25px;
+  cursor: pointer;
+  transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+}
+
+.rom-picker:hover,
+.rom-picker.drag {
+  transform: translateY(-3px);
+  background: rgba(0,0,0,.58);
+  box-shadow: 0 12px 30px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.24);
+}
+
+.rom-picker-inner strong {
+  display: block;
+  font-size: 25px;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 5px rgba(0,0,0,.85);
+}
+
+.rom-picker-inner span {
+  display: block;
+  font-size: 14px;
+  color: rgba(255,255,255,.78);
+  line-height: 1.5;
+  text-shadow: 0 2px 5px rgba(0,0,0,.85);
+}
+
+.select-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.aqua-button {
+  display: inline-block;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  color: black;
+  text-decoration: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(hsl(0 0% 100% / .85), transparent 10px),
+    linear-gradient(hsl(0 0% 100% / .25) 10px, transparent 10px),
+    radial-gradient(circle at 10px 5px, hsl(0 0% 100% / .25) 5px, transparent 5px),
+    radial-gradient(circle at 0 5px, hsl(0 0% 100% / .25) 5px, transparent 5px),
+    linear-gradient(var(--primary), var(--light));
+  padding: .6em 3em;
+  background-size: 100%, calc(100% - 20px), 10px 10px, 10px 10px, 100%;
+  background-position: top, top center, top left, top right, center;
+  background-repeat: no-repeat;
+  border: 0;
+  border-radius: 100vw;
+  position: relative;
+  cursor: pointer;
+}
+
+.aqua-button:active { box-shadow: inset 0 0 30px rgba(0,0,0,.55); }
+.aqua-button::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -1px;
+  margin-inline: auto;
+  background: linear-gradient(hsl(240,74%,30%), hsl(0,0%,38%));
+  border-radius: 100vw;
+}
+
+input[type=file], #forced, #clear { display:none; }
+#status {
+  text-align:center;
+  margin: 16px 0 0;
+  color: rgba(255,255,255,.72);
+  font-size: 13px;
+  text-shadow: 0 2px 5px rgba(0,0,0,.9);
+}
+
+/* Long sideways rectangle shown after a ROM is picked. */
+.filecard {
+  width: 100%;
+  margin-top: 34px;
+  padding: 0;
+  overflow: hidden;
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 20px;
+  box-shadow: 0 12px 45px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.2);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:20px 24px;
+  border-bottom:1px solid rgba(255,255,255,.22);
+}
+
+.name {
+  font-size: 23px;
+  font-weight: bold;
+  overflow-wrap:anywhere;
+  text-shadow: 0 2px 6px rgba(0,0,0,.9);
+}
+
+.badge {
+  flex-shrink:0;
+  padding:6px 11px;
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:999px;
+  background:rgba(255,255,255,.1);
+  font-size:13px;
+}
+
+.content { padding: 22px 24px 25px; }
+.grid {
+  display:grid;
+  grid-template-columns:190px minmax(0,1fr);
+  gap:0 18px;
+}
+.k, .v {
+  padding:9px 0;
+  border-bottom:1px solid rgba(255,255,255,.11);
+}
+.k { color:rgba(255,255,255,.68); }
+.v { overflow-wrap:anywhere; }
+.good { color:#b9efa0; }
+.bad { color:#ffadbb; }
+.unknown { color:#ffe39a; }
+.hashes { margin-top:16px; }
+.footer {
+  text-align:center;
+  margin-top:25px;
+  color:rgba(255,255,255,.65);
+  font-size:12px;
+}
+
+@media (max-width:700px) {
+  body { background-attachment:scroll; }
+  .page { width:min(100% - 24px,1000px); padding-top:20px; }
+  .site-title { font-size:36px; }
+  .welcome-text { font-size:16px; }
+  .rom-picker { width:min(300px,100%); height:230px; }
+  .grid { grid-template-columns:1fr; }
+  .k { border-bottom:0; padding-bottom:2px; margin-top:6px; }
+  .v { padding-top:2px; }
+  .head { align-items:flex-start; flex-direction:column; }
+  .badge { align-self:flex-start; }
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <h1 class="site-title">RetroSpector Web</h1>
+  <p class="welcome-text">Drop in a ROM and inspect its header information.</p>
+
+  <label class="rom-picker black-box" id="drop" for="picker">
+    <div class="rom-picker-inner">
+      <strong>Select a ROM</strong>
+      <span>Drop a ROM into this box<br>or use the button below.</span>
+    </div>
+  </label>
+
+  <div class="select-row">
+    <button class="aqua-button" type="button" id="chooseButton">Choose ROM</button>
+  </div>
+
+  <input id="picker" type="file">
+  <select id="forced"><option value="auto" selected>Auto-detect system</option></select>
+  <button id="clear" type="button">Clear</button>
+
+  <div id="status">Ready.</div>
+  <div id="out"></div>
+
+  <p class="footer">ROMs are inspected locally in your browser.</p>
+</main>
+<script>
+
+const $=s=>document.querySelector(s), out=$('#out'), status=$('#status');
+const td=new TextDecoder('ascii'), clean=a=>td.decode(a).replace(/\0/g,'').replace(/[\x00-\x1f\x7f]/g,'').trim(), hex=(n,w=2)=>'0x'+Number(n>>>0).toString(16).toUpperCase().padStart(w,'0');
+const u16be=(b,o)=>((b[o]<<8)|b[o+1])>>>0, u16le=(b,o)=>(b[o]|b[o+1]<<8)>>>0, u32be=(b,o)=>((b[o]*0x1000000)+(b[o+1]<<16)+(b[o+2]<<8)+b[o+3])>>>0, u32le=(b,o)=>(b[o]+b[o+1]*256+b[o+2]*65536+b[o+3]*16777216)>>>0;
+function formatBytes(n){for(const u of ['B','KiB','MiB','GiB']){if(n<1024||u==='GiB')return (u==='B'?n:n.toFixed(n<10?2:1))+' '+u;n/=1024}}
+function regionNintendo(c){return ({J:'Japan',E:'USA',P:'Europe',D:'Germany',F:'France',I:'Italy',S:'Spain',U:'Australia',K:'Korea',W:'World',A:'Asia'})[String.fromCharCode(c)]||`Unknown (${String.fromCharCode(c)||hex(c)})`}
+function field(label,value,cls=''){return {label,value:String(value),cls}}
+function crc32(bytes){let c=0xffffffff;for(const x of bytes){c^=x;for(let k=0;k<8;k++)c=(c>>>1)^((c&1)?0xedb88320:0)}return (c^0xffffffff)>>>0}
+async function digest(name,buf){const d=await crypto.subtle.digest(name,buf);return [...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,'0')).join('').toUpperCase()}
+function gb(b){if(b.length<0x150)return null;let calc=0;for(let i=0x134;i<=0x14c;i++)calc=(calc-b[i]-1)&255;if(calc!==b[0x14d])return null;const logoSum=b.slice(0x104,0x134).reduce((a,x)=>a+x,0);if(b[0x104]!==0xCE||logoSum!==0x1518)return null;let gsum=0;for(let i=0;i<b.length;i++)if(i!==0x14e&&i!==0x14f)gsum=(gsum+b[i])&0xffff;const cart={0:'ROM ONLY',1:'MBC1',2:'MBC1+RAM',3:'MBC1+RAM+BATTERY',5:'MBC2',6:'MBC2+BATTERY',8:'ROM+RAM',9:'ROM+RAM+BATTERY',15:'MBC3+TIMER+BATTERY',16:'MBC3+TIMER+RAM+BATTERY',17:'MBC3',18:'MBC3+RAM',19:'MBC3+RAM+BATTERY',25:'MBC5',26:'MBC5+RAM',27:'MBC5+RAM+BATTERY',28:'MBC5+RUMBLE',29:'MBC5+RUMBLE+RAM',30:'MBC5+RUMBLE+RAM+BATTERY'}[b[0x147]]||`Unknown (${hex(b[0x147])})`;const romCode=b[0x148],romSize=romCode<=8?0x8000*(2**romCode):({0x52:72*0x4000,0x53:80*0x4000,0x54:96*0x4000})[romCode];const ramSize=({0:0,2:8192,3:32768,4:131072,5:65536})[b[0x149]];const cgb=b[0x143]===0xC0?'Color only':b[0x143]===0x80?'Supported':'No';return {console:'Game Boy',fields:[field('Title',clean(b.slice(0x134,0x143))),field('Region',b[0x14a]===0?'Japan':'Non-Japanese'),field('Version',b[0x14c]),field('Cartridge',cart),field('ROM size',romSize?formatBytes(romSize):`Unknown (${hex(romCode)})`),field('RAM size',ramSize!==undefined?formatBytes(ramSize):`Unknown (${hex(b[0x149])})`),field('Super Game Boy',b[0x146]===3?'Supported':'No'),field('Game Boy Color',cgb),field('Header checksum',`${hex(b[0x14d])} ✓`,'good'),field('Global checksum',`${hex(u16be(b,0x14e),4)} ${u16be(b,0x14e)===gsum?'✓':'≠ '+hex(gsum,4)}`,u16be(b,0x14e)===gsum?'good':'bad')]}}
+function gba(b){if(b.length<0xc0||b[0xb2]!==0x96)return null;let c=0xe7;for(let i=0xa0;i<0xbd;i++)c=(c-b[i])&255;if(c!==b[0xbd])return null;return {console:'Game Boy Advance',fields:[field('Title',clean(b.slice(0xa0,0xac))),field('Game code',clean(b.slice(0xac,0xb0))),field('Region',regionNintendo(b[0xaf])),field('Maker code',clean(b.slice(0xb0,0xb2))),field('Version',b[0xbc]),field('Header checksum',`${hex(b[0xbd])} ✓`,'good')]}}
+function nes(b){if(b.length<16||b[0]!==0x4e||b[1]!==0x45||b[2]!==0x53||b[3]!==0x1a)return null;const nes2=(b[7]&0x0c)===0x08;const mapper=((b[6]>>4)|(b[7]&0xf0)|(nes2?((b[8]&0x0f)<<8):0));const prg=b[4]*16384,chr=b[5]*8192;return {console:'NES / Famicom',fields:[field('Header format',nes2?'NES 2.0':'iNES'),field('Mapper',mapper),field('PRG ROM',formatBytes(prg)),field('CHR ROM',formatBytes(chr)),field('Mirroring',(b[6]&8)?'Four-screen':(b[6]&1)?'Vertical':'Horizontal'),field('Battery',(b[6]&2)?'Yes':'No'),field('Trainer',(b[6]&4)?'Yes':'No'),field('Console',(b[7]&3)===1?'Vs. System':(b[7]&3)===2?'PlayChoice-10':'NES/Famicom')]}}
+function n64(b){if(b.length<0x40)return null;let fmt,m=[...b.slice(0,4)];const key=m.map(x=>x.toString(16).padStart(2,'0')).join('');if(key==='80371240')fmt='z64 (big-endian)';else if(key==='40123780')fmt='n64 (little-endian)';else if(key==='37804012')fmt='v64 (byte-swapped)';else return null;let x=b;if(fmt.startsWith('n64')){x=new Uint8Array(b.length);for(let i=0;i+3<b.length;i+=4){x[i]=b[i+3];x[i+1]=b[i+2];x[i+2]=b[i+1];x[i+3]=b[i]}}else if(fmt.startsWith('v64')){x=new Uint8Array(b.length);for(let i=0;i+1<b.length;i+=2){x[i]=b[i+1];x[i+1]=b[i]}}return {console:'Nintendo 64',hashBytes:x,fields:[field('Stored title',clean(x.slice(0x20,0x34))),field('Media',String.fromCharCode(x[0x3b])),field('Game code',clean(x.slice(0x3b,0x3f))),field('Region',regionNintendo(x[0x3e])),field('Revision',x[0x3f]),field('ROM format',fmt),field('Stored CRC1',hex(u32be(x,0x10),8)),field('Stored CRC2',hex(u32be(x,0x14),8))]}}
+function crc16modbus(b,end=b.length){let crc=0xffff;for(let i=0;i<end;i++){crc^=b[i];for(let j=0;j<8;j++)crc=(crc&1)?((crc>>>1)^0xa001):(crc>>>1)}return crc&0xffff}
+function nds(b){if(b.length<0x160||u16le(b,0x15c)!==0xcf56||u16le(b,0x84)!==0x4000)return null;const s=u16le(b,0x15e),c=crc16modbus(b,0x15e);const cap=b[0x14],mib=cap>=3&&cap<31?(1<<(cap-3)):null;return {console:'Nintendo DS',fields:[field('Name',clean(b.slice(0,0x0c))),field('Code',clean(b.slice(0x0c,0x10))),field('Region',regionNintendo(b[0x0f])),field('Maker',clean(b.slice(0x10,0x12))),field('Version',b[0x1e]),field('ROM size',mib?mib+' MiB':`Unknown (${hex(cap)})`),field('Header CRC',`${hex(s,4)} ${s===c?'✓':'≠ '+hex(c,4)}`,s===c?'good':'bad')]}}
+function genesis(b){if(b.length<0x200)return null;const sig=clean(b.slice(0x100,0x110));if(!sig.startsWith('SEGA'))return null;let sum=0;for(let i=0x200;i+1<b.length;i+=2)sum=(sum+u16be(b,i))&0xffff;const st=u16be(b,0x18e),regions=clean(b.slice(0x1f0,0x1f4));let rd='Unknown';if(/[J1]/.test(regions)&&/[U4]/.test(regions)&&/[E8]/.test(regions))rd='Japan / USA / Europe';else if(/[U4]/.test(regions))rd='USA';else if(/[J1]/.test(regions))rd='Japan';else if(/[E8]/.test(regions))rd='Europe';const con=sig.includes('32X')?'Sega 32X':sig.includes('GENESIS')?'Sega Genesis':'Sega Mega Drive / Genesis';return {console:con,fields:[field('Domestic name',clean(b.slice(0x120,0x150))),field('Overseas name',clean(b.slice(0x150,0x180))),field('Copyright',clean(b.slice(0x110,0x120))),field('Region',`${rd} (${regions})`),field('Device support',clean(b.slice(0x190,0x1a0))),field('Stored checksum',`${hex(st,4)} ${st===sum?'✓':'≠ '+hex(sum,4)}`,st===sum?'good':'bad')]}}
+function sms(b){if(b.length<0x2000)return null;let o=null;for(const x of [0x7ff0,0x3ff0,0x1ff0])if(b.length>=x+16&&clean(b.slice(x,x+8))==='TMR SEGA'){o=x;break}if(o===null)return null;const h=b.slice(o,o+16),reg=h[15]>>4,ver=h[15]&15;const r=({3:'Master System Japan',4:'Master System Export',5:'Game Gear Japan',6:'Game Gear Export',7:'Game Gear International'})[reg]||`Unknown (${reg})`;const console=reg>=5?'Game Gear':'Master System';const product=((h[14]&0x0f)*10000)+(((h[13]>>4)*10+(h[13]&15))*100)+((h[12]>>4)*10+(h[12]&15));return {console,fields:[field('Product code',product),field('Version',ver),field('Region',r),field('Header offset',hex(o,4)),field('Stored checksum',hex(u16le(h,10),4)),field('ROM size code',hex(h[15]&15))]}}
+function vb(b){if(b.length<0x20000||b.length>0x200000||(b.length&(b.length-1)))return null;const o=b.length-0x220,h=b.slice(o,o+32);if([...h.slice(0x14,0x19)].some(x=>x!==0))return null;const title=clean(h.slice(0,0x14));if(!title)return null;return {console:'Virtual Boy',fields:[field('Title',title),field('Maker code',clean(h.slice(0x19,0x1b))),field('Game code',clean(h.slice(0x1b,0x1f))),field('Region',regionNintendo(h[0x1e])),field('Version',h[0x1f])]}}
+function snes(b){let base=0;if((b.length%0x8000)===512)base=512;const d=b.slice(base);const candidates=[0x7fc0,0xffc0,0x40ffc0,0x407fc0].filter(o=>o+0x20<=d.length);let best=null;for(const o of candidates){const title=clean(d.slice(o,o+21)),map=d[o+0x15],comp=u16le(d,o+0x1c),sum=u16le(d,o+0x1e);let score=0;if(((comp^sum)&0xffff)===0xffff)score+=5;if(title&&[...title].every(ch=>ch.charCodeAt(0)>=32&&ch.charCodeAt(0)<127))score+=2;if([0x20,0x21,0x22,0x23,0x25,0x30,0x31,0x32,0x35].includes(map))score+=2;if(!best||score>best.score)best={o,score,title,map,comp,sum}}if(!best||best.score<5)return null;const o=best.o;const mapName=({0x20:'LoROM / SlowROM',0x21:'HiROM / SlowROM',0x30:'LoROM / FastROM',0x31:'HiROM / FastROM',0x23:'SA-1',0x25:'ExHiROM',0x35:'ExHiROM / FastROM'})[best.map]||hex(best.map);return {console:'Super NES / Super Famicom',fields:[field('Title',best.title),field('Map mode',mapName),field('Region code',d[o+0x19]),field('Version',d[o+0x1b]),field('Cartridge type',hex(d[o+0x16])),field('ROM size code',hex(d[o+0x17])),field('RAM size code',hex(d[o+0x18])),field('Stored checksum',hex(best.sum,4)),field('Checksum complement',hex(best.comp,4)),field('Copier header',base?'512-byte header detected':'No')]}}
+const parsers={nes,gb,gba,n64,nds,snes,genesis,sms,vb};
+function detect(b,forced){if(forced!=='auto')return parsers[forced](b);for(const k of ['n64','gba','gb','genesis','sms','nds','nes','vb','snes']){const r=parsers[k](b);if(r)return r}return null}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c])}
+async function inspect(file){const arr=await file.arrayBuffer(),b=new Uint8Array(arr),forced=$('#forced').value;const r=detect(b,forced);const card=document.createElement('section');card.className='filecard';const crc=crc32(b).toString(16).toUpperCase().padStart(8,'0');let sha1='Unavailable',sha256='Unavailable';try{sha1=await digest('SHA-1',(r&&r.hashBytes?r.hashBytes:b).buffer);sha256=await digest('SHA-256',(r&&r.hashBytes?r.hashBytes:b).buffer)}catch{}let body='';if(r){body=`<div class="grid">${r.fields.map(f=>`<div class="k">${esc(f.label)}</div><div class="v ${f.cls||''}">${esc(f.value)}</div>`).join('')}</div>`}else body='<div class="unknown">Unable to determine console type from this ROM file.</div>';body+=`<div class="hashes grid"><div class="k">File size</div><div class="v">${formatBytes(file.size)} (${file.size.toLocaleString()} bytes)</div><div class="k">CRC32</div><div class="v">${crc}</div><div class="k">SHA-1</div><div class="v">${sha1}</div><div class="k">SHA-256</div><div class="v">${sha256}</div></div>`;card.innerHTML=`<div class="head"><div class="name">${esc(file.name)}</div><div class="badge">${esc(r?r.console:'Unknown')}</div></div><div class="content">${body}</div>`;out.appendChild(card)}
+async function handle(files){files=[...files];if(!files.length)return;status.textContent=`Inspecting ${files.length} file${files.length===1?'':'s'}…`;for(const f of files)await inspect(f);status.textContent=`Done — ${files.length} file${files.length===1?'':'s'} inspected.`}
+$('#picker').addEventListener('change',e=>handle(e.target.files));$('#clear').onclick=()=>{out.innerHTML='';status.textContent='Ready.'};const drop=$('#drop');for(const ev of ['dragenter','dragover'])drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag')});for(const ev of ['dragleave','drop'])drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag')});drop.addEventListener('drop',e=>handle(e.dataTransfer.files));
+
+
+/* page-specific controls */
+const chooseButton = document.getElementById('chooseButton');
+chooseButton.addEventListener('click', function() {
+  document.getElementById('picker').click();
+});
+</script>
+</body>
+</html>
